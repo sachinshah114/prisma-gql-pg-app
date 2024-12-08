@@ -14,12 +14,24 @@ type User {
   isBlocked: Boolean!
 }
 
+type GetProfile {
+  id: Float!
+  name: String!
+  email: String!
+  isAdmin: Boolean!
+  isVerified: Boolean!
+  verificationCode: String!
+  phone: String!
+  isBlocked: Boolean!
+}
+
 type LoginResponse {
   access_token: String!
 }
 
 type Query {
   users: [User!]!
+  getProfile: GetProfile!
 }
 
 type Mutation {

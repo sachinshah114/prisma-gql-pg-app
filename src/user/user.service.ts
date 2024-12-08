@@ -33,6 +33,23 @@ export class UserService {
         }) as unknown as User;
     }
 
+    async getProfile(email: string) {
+        return this.prisma.user.findFirst({
+            where: {
+                email: email
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                isAdmin: true,
+                isBlocked: true,
+                isVerified: true,
+                phone: true
+            }
+        }) as unknown as User;
+    }
+
     async createUser(data: CreateUserInputDTO) {
         return this.prisma.user.create({ data });
     }

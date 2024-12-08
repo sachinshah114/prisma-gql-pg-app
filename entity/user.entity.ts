@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, OmitType } from '@nestjs/graphql';
 
 @ObjectType()
 export class User {
@@ -29,3 +29,6 @@ export class User {
     @Field()
     isBlocked: boolean;
 }
+
+@ObjectType()
+export class GetProfile extends OmitType(User, ['password'] as const) { }
