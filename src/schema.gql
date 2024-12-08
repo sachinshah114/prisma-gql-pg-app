@@ -14,12 +14,17 @@ type User {
   isBlocked: Boolean!
 }
 
+type LoginResponse {
+  access_token: String!
+}
+
 type Query {
   users: [User!]!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInputDTO!): User!
+  login(input: LoginInput!): LoginResponse!
 }
 
 input CreateUserInputDTO {
@@ -27,5 +32,9 @@ input CreateUserInputDTO {
   email: String!
   password: String!
   phone: String
-  verificationCode: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

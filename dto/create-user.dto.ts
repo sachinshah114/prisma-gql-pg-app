@@ -30,6 +30,6 @@ export class CreateUserInputDTO {
     @IsOptional()
     phone?: string;
 
-    @Field()
+    @IsOptional()
     verificationCode?: string;
 }

@@ -12,7 +12,7 @@ export class User {
     email: string;
 
     @Field()
-    password: string;
+    password?: string;
 
     @Field()
     isAdmin: boolean;
