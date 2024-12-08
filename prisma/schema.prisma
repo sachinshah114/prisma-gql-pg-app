@@ -1,0 +1,30 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int     @id @default(autoincrement())
+  name             String
+  email            String  @unique
+  password         String
+  isAdmin          Boolean @default(false)
+  isVerified       Boolean @default(false)
+  verificationCode String?
+  phone            String?
+  isBlocked        Boolean @default(false)
+}
+
+// model Address {
+//   id       String  @id @default(auto()) @map("_id") @db.ObjectId
+//   address1 String
+//   address2 String?
+//   city     String
+//   postcode String
+//   User     User[]
+// }
