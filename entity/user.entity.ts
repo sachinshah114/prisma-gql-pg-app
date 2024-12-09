@@ -1,4 +1,15 @@
-import { Field, ObjectType, OmitType } from '@nestjs/graphql';
+import { Field, ObjectType, OmitType, registerEnumType } from '@nestjs/graphql';
+
+// Define the roles enum
+export enum UserRole {
+    ADMIN = 'ADMIN',
+    USER = 'USER',
+}
+
+// Register the enum with GraphQL
+registerEnumType(UserRole, {
+    name: 'UserRole', // This will be the name used in the GraphQL schema
+});
 
 @ObjectType()
 export class User {
@@ -28,6 +39,9 @@ export class User {
 
     @Field()
     isBlocked: boolean;
+
+    @Field(() => UserRole, { nullable: true, defaultValue: UserRole.USER })
+    role?: UserRole;
 }
 
 @ObjectType()

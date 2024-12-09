@@ -11,15 +11,11 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class UserResolver {
   constructor(private readonly userService: UserService) { }
 
-  @Query(() => [User])
-  async users(): Promise<User[]> {
-    return this.userService.getUser();
-  }
-
   @UseGuards(JwtAuthGuard)
   @Query(() => GetProfile)
   async getProfile(@Context() context: any): Promise<User> {
     const user = context.req.user as User;
+    console.log(`User details is ::: `, user);
     return this.userService.getProfile(user.email);
   }
 
@@ -37,6 +33,7 @@ export class UserResolver {
     //Generate a random verification code to varify later on...
     createUserInputDTO.verificationCode = await GenerateRandomAlphaNumericCode(6);
 
+    // createUserInputDTO.role = 'USER';
     return this.userService.createUser(createUserInputDTO);
   }
 }
@@ -46,8 +43,8 @@ export class UserResolver {
 
 mutation {
   createUser(createUserInput: { 
-    name: "test", 
-    email: "john@example.com", 
+    name: "sachin", 
+    email: "sachin@gmail.com", 
     password: "123456",
     phone: "7774846405"
   }) {

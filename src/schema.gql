@@ -12,6 +12,12 @@ type User {
   verificationCode: String!
   phone: String!
   isBlocked: Boolean!
+  role: UserRole
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 type GetProfile {
@@ -23,6 +29,7 @@ type GetProfile {
   verificationCode: String!
   phone: String!
   isBlocked: Boolean!
+  role: UserRole
 }
 
 type LoginResponse {
@@ -30,7 +37,6 @@ type LoginResponse {
 }
 
 type Query {
-  users: [User!]!
   getProfile: GetProfile!
 }
 

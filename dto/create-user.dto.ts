@@ -7,6 +7,7 @@ import {
     IsOptional,
     IsPhoneNumber,
 } from 'class-validator';
+import { UserRole } from 'entity/user.entity';
 
 @InputType()
 export class CreateUserInputDTO {
@@ -32,4 +33,7 @@ export class CreateUserInputDTO {
 
     @IsOptional()
     verificationCode?: string;
+
+    @IsOptional()
+    role?: UserRole.USER;
 }

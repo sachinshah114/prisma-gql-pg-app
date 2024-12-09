@@ -28,7 +28,8 @@ export class UserService {
                 id: true,
                 email: true,
                 name: true,
-                password: true
+                isAdmin: true,
+                password: true,
             }
         }) as unknown as User;
     }
