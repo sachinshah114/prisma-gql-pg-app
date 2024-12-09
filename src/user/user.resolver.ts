@@ -1,11 +1,14 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetProfile, User } from 'entity/user.entity';
+import { GetProfile, User, UserRole } from 'entity/user.entity';
 import { UserService } from './user.service';
 import { CreateUserInputDTO } from 'dto/create-user.dto';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { EncryptPassword } from 'src/common/encrypt';
 import { GenerateRandomAlphaNumericCode } from 'src/common/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RoleGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -13,9 +16,9 @@ export class UserResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => GetProfile)
+  @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]))
   async getProfile(@Context() context: any): Promise<User> {
     const user = context.req.user as User;
-    console.log(`User details is ::: `, user);
     return this.userService.getProfile(user.email);
   }
 

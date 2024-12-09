@@ -30,6 +30,7 @@ export class UserService {
                 name: true,
                 isAdmin: true,
                 password: true,
+                role: true
             }
         }) as unknown as User;
     }
