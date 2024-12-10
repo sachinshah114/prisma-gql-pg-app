@@ -1,4 +1,5 @@
-import { Field, ObjectType, OmitType, registerEnumType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ObjectType, OmitType, registerEnumType } from '@nestjs/graphql';
+import { Address } from './address.entity';
 
 // Define the roles enum
 export enum UserRole {
@@ -42,6 +43,15 @@ export class User {
 
     @Field(() => UserRole, { nullable: true, defaultValue: UserRole.USER })
     role?: UserRole;
+
+    @Field(() => [Address], { nullable: true })
+    address?: Address[];
+
+    @Field(() => GraphQLISODateTime)
+    createdAt?: Date;
+
+    @Field(() => GraphQLISODateTime)
+    updatedAt?: Date;
 }
 
 @ObjectType()

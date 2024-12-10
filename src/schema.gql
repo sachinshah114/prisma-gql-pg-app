@@ -2,6 +2,25 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Address {
+  id: Float!
+  address1: String!
+  address2: String
+  city: String!
+  postcode: String!
+  isActive: Boolean!
+  isDeleted: Boolean!
+  user: User!
+  userId: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: Float!
   name: String!
@@ -13,6 +32,9 @@ type User {
   phone: String!
   isBlocked: Boolean!
   role: UserRole
+  address: [Address!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum UserRole {
@@ -30,6 +52,9 @@ type GetProfile {
   phone: String!
   isBlocked: Boolean!
   role: UserRole
+  address: [Address!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type LoginResponse {
@@ -43,6 +68,7 @@ type Query {
 type Mutation {
   createUser(createUserInput: CreateUserInputDTO!): User!
   login(input: LoginInput!): LoginResponse!
+  createAddress(createAddress: CreateAddressInputDTO!): Address!
 }
 
 input CreateUserInputDTO {
@@ -55,4 +81,11 @@ input CreateUserInputDTO {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input CreateAddressInputDTO {
+  address: String!
+  address2: String
+  city: String!
+  postcode: String!
 }

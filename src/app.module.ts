@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RoleGuard } from './auth/roles.guard';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { RoleGuard } from './auth/roles.guard';
       // },
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [AppService,
