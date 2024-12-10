@@ -63,12 +63,14 @@ type LoginResponse {
 
 type Query {
   getProfile: GetProfile!
+  getAddressList: [Address!]!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInputDTO!): User!
   login(input: LoginInput!): LoginResponse!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
+  updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
 }
 
 input CreateUserInputDTO {
@@ -84,8 +86,18 @@ input LoginInput {
 }
 
 input CreateAddressInputDTO {
-  address: String!
+  address1: String!
   address2: String
   city: String!
   postcode: String!
+}
+
+input UpdateAddressInputDTO {
+  id: Float!
+  address1: String
+  address2: String
+  city: String
+  postcode: String
+  isActive: Boolean
+  isDeleted: Boolean
 }

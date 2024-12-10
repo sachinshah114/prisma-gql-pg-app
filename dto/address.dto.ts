@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from "@nestjs/graphql";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateIf } from "class-validator";
 
 
 @InputType()
@@ -8,7 +8,7 @@ export class CreateAddressInputDTO {
     @Field()
     @IsString()
     @IsNotEmpty({ message: 'Address is required' })
-    address: string;
+    address1: string;
 
     @Field({ nullable: true })
     @IsOptional()
@@ -29,18 +29,37 @@ export class CreateAddressInputDTO {
 @InputType()
 export class UpdateAddressInputDTO {
 
-    @Field(() => ID)
-    id: number;
+    @Field()
+    @IsOptional()
+    id?: number;
 
     @Field({ nullable: true })
-    address: string;
+    @ValidateIf((o) => o.address1 !== undefined)
+    @IsNotEmpty({ message: 'Address1 should not be empty' })
+    address1?: string;
 
     @Field({ nullable: true })
+    @ValidateIf((o) => o.address2 !== undefined)
+    @IsNotEmpty({ message: 'Address2 should not be empty' })
     address2?: string;
 
     @Field({ nullable: true })
-    city: string;
+    @ValidateIf((o) => o.city !== undefined)
+    @IsNotEmpty({ message: 'City should not be empty' })
+    city?: string;
 
     @Field({ nullable: true })
-    postcode: string;
+    @ValidateIf((o) => o.postcode !== undefined)
+    @IsNotEmpty({ message: 'Postcode should not be empty' })
+    postcode?: string;
+
+    @Field({ nullable: true })
+    @ValidateIf((o) => o.isActive !== undefined)
+    @IsBoolean({ message: 'isActive must be a boolean' })
+    isActive?: boolean;
+
+    @Field({ nullable: true })
+    @ValidateIf((o) => o.isDeleted !== undefined)
+    @IsBoolean({ message: 'isDeleted must be a boolean' })
+    isDeleted?: boolean;
 }
