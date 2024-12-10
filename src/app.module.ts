@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RoleGuard } from './auth/roles.guard';
 import { AddressModule } from './address/address.module';
+import { FilterObjectGuard } from './common/common';
 
 @Module({
   imports: [
@@ -33,10 +34,12 @@ import { AddressModule } from './address/address.module';
   ],
   controllers: [AppController],
   providers: [AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RoleGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: FilterObjectGuard,
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {
+
+}

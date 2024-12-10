@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAddressInputDTO, UpdateAddressInputDTO } from 'dto/address.dto';
 import { User } from 'entity/user.entity';
+import { FilterBodyObject } from 'src/common/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class AddressService {
         return this.prisma.address.create({
             data: {
                 address1: data.address,
-                address2: data.address2 || null,
+                address2: data.address2,
                 city: data.city,
                 postcode: data.postcode,
                 isActive: false,
