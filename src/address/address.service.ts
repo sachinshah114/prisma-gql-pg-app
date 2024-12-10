@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAddressInputDTO, UpdateAddressInputDTO } from 'dto/address.dto';
-import { User } from 'entity/user.entity';
-import { FilterBodyObject } from 'src/common/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
