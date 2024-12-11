@@ -59,4 +59,8 @@ export class UserService {
     async getUser() {
         return this.prisma.user.findMany({});
     }
+
+    sendVerificationEmail(user: User) {
+        // const emailToken;
+    }
 }

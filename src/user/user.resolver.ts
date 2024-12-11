@@ -36,9 +36,15 @@ export class UserResolver {
     //Generate a random verification code to varify later on...
     createUserInputDTO.verificationCode = await GenerateRandomAlphaNumericCode(6);
 
-    // createUserInputDTO.role = 'USER';
-    return this.userService.createUser(createUserInputDTO);
+    const newUser = await this.userService.createUser(createUserInputDTO);
+
+    //Now send email to this user in async mode as in background... 
+    this.userService.sendVerificationEmail(newUser as User);
+
+    return newUser;
   }
+
+
 }
 
 

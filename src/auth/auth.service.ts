@@ -29,7 +29,11 @@ export class AuthService {
 
     const payload = { id: user.id, email: user.email, isAdmin: user.isAdmin, role: user.role };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.createJwtToken(payload),
     };
+  }
+
+  createJwtToken(payload) {
+    return this.jwtService.sign(payload)
   }
 }

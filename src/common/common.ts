@@ -19,31 +19,6 @@ export function EmptyCheck(str: string) {
   return str.trim().toLowerCase() || null
 }
 
-// export function FilterBodyObject(obj: any) {
-//   if (typeof obj !== 'object' || obj === null) {
-//     return obj;
-//   }
-
-//   if (Array.isArray(obj)) {
-//     return obj.map(FilterBodyObject);
-//   }
-
-//   const filteredObj: { [key: string]: any } = {};
-//   for (const key in obj) {
-//     const value = obj[key];
-//     const filteredValue = FilterBodyObject(value);
-
-//     if (typeof filteredValue === 'string' && EmptyCheck(filteredValue)) {
-//       filteredObj[key] = filteredValue;
-//     } else if (filteredValue !== null && filteredValue !== undefined) {
-//       filteredObj[key] = filteredValue;
-//     }
-//   }
-
-//   console.log(`[filteredObj] ::: `, filteredObj);
-//   return filteredObj;
-// }
-
 export function FilterBodyObject(obj: any): any {
   // Helper function to check if a value is an object
   const isObject = (value: any) =>
