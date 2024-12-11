@@ -59,6 +59,12 @@ export class FilterObjectGuard implements CanActivate {
     // Convert to GQL context
     const gqlContext = GqlExecutionContext.create(context);
 
+    //Exampt some route from hear...
+    if ('verifyEmail' in gqlContext.getArgs()) {
+      return true;
+    }
+
+
     // Get the variables from the GraphQL request
     const variables = gqlContext.getArgs();
 

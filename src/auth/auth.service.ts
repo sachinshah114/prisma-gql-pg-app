@@ -1,20 +1,30 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
-import { UserService } from '../user/user.service';
 import { User } from 'entity/user.entity';
+import { PrismaService } from 'src/prisma.service';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private prisma: PrismaService,
   ) { }
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.userService.findOneByEmail(email) as User;
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: email
+      }
+    }) as User;
     if (user && (await bcrypt.compare(password, user.password))) {
+
+      if (user.isVerified === false) {
+        throw new BadRequestException('User email is not verified.');
+      }
+
       const { password, ...result } = user; // Remove password from object
       return result;
     }
@@ -34,6 +44,16 @@ export class AuthService {
   }
 
   createJwtToken(payload) {
-    return this.jwtService.sign(payload)
+    return this.jwtService.sign(payload);
+  }
+
+  async verifyJwtToken(token) {
+    const verify = await this.jwtService.verifyAsync(token);
+    return verify;
+  }
+
+  async decodeJwtToken(token) {
+    const decode = await this.jwtService.decode(token);
+    return decode;
   }
 }

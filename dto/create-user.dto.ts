@@ -37,3 +37,11 @@ export class CreateUserInputDTO {
     @IsOptional()
     role?: UserRole.USER;
 }
+
+
+@InputType()
+export class VerifyEmailDTO {
+    @Field()
+    @IsNotEmpty({ message: 'Token is required' })
+    token: string;
+}

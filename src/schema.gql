@@ -67,10 +67,16 @@ type Query {
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInputDTO!): User!
   login(input: LoginInput!): LoginResponse!
+  createUser(createUserInput: CreateUserInputDTO!): User!
+  verifyEmail(verifyEmail: VerifyEmailDTO!): String!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 input CreateUserInputDTO {
@@ -80,9 +86,8 @@ input CreateUserInputDTO {
   phone: String
 }
 
-input LoginInput {
-  email: String!
-  password: String!
+input VerifyEmailDTO {
+  token: String!
 }
 
 input CreateAddressInputDTO {

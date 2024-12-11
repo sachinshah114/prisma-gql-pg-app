@@ -27,8 +27,8 @@ import { FilterObjectGuard } from './common/common';
       //   return graphQLFormattedError;
       // },
     }),
-    UserModule,
     AuthModule,
+    UserModule,
     AddressModule
   ],
   controllers: [AppController],

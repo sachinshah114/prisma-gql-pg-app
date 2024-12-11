@@ -1,7 +1,7 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GetProfile, User, UserRole } from 'entity/user.entity';
 import { UserService } from './user.service';
-import { CreateUserInputDTO } from 'dto/create-user.dto';
+import { CreateUserInputDTO, VerifyEmailDTO } from 'dto/create-user.dto';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { EncryptPassword } from 'src/common/encrypt';
 import { GenerateRandomAlphaNumericCode } from 'src/common/common';
@@ -44,6 +44,11 @@ export class UserResolver {
     return newUser;
   }
 
+  @Mutation(() => String)
+  async verifyEmail(@Args('verifyEmail') verifyEmailDTO: VerifyEmailDTO) {
+    console.log(`Token is ::: `, verifyEmailDTO.token);
+    return await this.userService.verifyUserByEmailToken(verifyEmailDTO.token);
+  }
 
 }
 
