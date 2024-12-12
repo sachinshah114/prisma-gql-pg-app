@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 const bcrypt = require('bcrypt');
 import { User } from 'entity/user.entity';
 import { PrismaService } from 'src/prisma.service';
-import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +18,8 @@ export class AuthService {
         email: email
       }
     }) as User;
-    if (user && (await bcrypt.compare(password, user.password))) {
+    // if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await this.comparePassword(password, user.password))) {
 
       if (user.isVerified === false) {
         throw new BadRequestException('User email is not verified.');
@@ -55,5 +55,9 @@ export class AuthService {
   async decodeJwtToken(token) {
     const decode = await this.jwtService.decode(token);
     return decode;
+  }
+
+  async comparePassword(password: string, hashedPassword: string) {
+    return await bcrypt.compare(password, hashedPassword);
   }
 }

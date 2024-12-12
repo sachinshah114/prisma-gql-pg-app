@@ -43,3 +43,59 @@ export class AddressResolver {
     }
 
 }
+
+
+/*
+mutation{
+  createAddress(createAddress:{
+    address1: "5 Evenly Avenue     ",
+    address2:"",
+    postcode:" NW9 0JF     ",
+    city:"London     "
+  }){
+    id,
+    address1,
+    address2,
+    city,
+    postcode,
+    isActive,
+    isDeleted,
+    createdAt,
+    updatedAt   
+  }
+}
+
+
+
+
+mutation {
+  updateAddress(
+    updateAddress: {
+      id: 20,
+      isActive: true
+    }
+  ){
+    id,
+    address1,
+    address2,
+    postcode,
+    city,
+    isActive,
+    isDeleted,
+    createdAt,
+    updatedAt
+  }
+}
+
+
+
+
+
+query{
+  getAddressList{
+    id,
+    address1,
+    address2
+  }
+}
+*/

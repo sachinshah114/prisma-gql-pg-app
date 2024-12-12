@@ -70,6 +70,7 @@ type Mutation {
   login(input: LoginInput!): LoginResponse!
   createUser(createUserInput: CreateUserInputDTO!): User!
   verifyEmail(verifyEmail: VerifyEmailDTO!): String!
+  changePassword(changePassword: ChangePasswordDTO!): String!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
 }
@@ -88,6 +89,12 @@ input CreateUserInputDTO {
 
 input VerifyEmailDTO {
   token: String!
+}
+
+input ChangePasswordDTO {
+  password: String!
+  new_password: String!
+  confirm_password: String!
 }
 
 input CreateAddressInputDTO {

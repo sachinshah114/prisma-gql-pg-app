@@ -101,4 +101,13 @@ export class UserService {
 
         return { message: 'User email verified successfully' }.message.toString();
     }
+
+    async updateUserDetails(data: any, user: User) {
+        await this.prisma.user.update({
+            where: {
+                email: user.email
+            },
+            data
+        });
+    }
 }
