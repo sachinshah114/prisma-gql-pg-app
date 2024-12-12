@@ -8,7 +8,8 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) { }
 
   @Mutation(() => LoginResponse)
-  async login(@Args('input') loginInput: LoginInput): Promise<LoginResponse> {
+  async login(@Args('login') loginInput: LoginInput): Promise<LoginResponse> {
+    console.log(`loginInput ::: `, loginInput);
     return this.authService.logIn(loginInput.email, loginInput.password);
   }
 }
@@ -16,7 +17,7 @@ export class AuthResolver {
 /*
 
 mutation {
-  login(input: { email: "john@example.com", password: "123456" }) {
+  login(login: { email: "sachin@gmail.com", password: "Test@1234" }) {
     access_token 
   }
 }

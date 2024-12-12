@@ -70,6 +70,7 @@ export class UserService {
             email: user.email,
             id: user.id
         });
+        console.log(`emailToken ::: `, emailToken);
 
         return;
         const emailService = new EmailService();

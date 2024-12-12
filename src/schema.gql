@@ -67,10 +67,12 @@ type Query {
 }
 
 type Mutation {
-  login(input: LoginInput!): LoginResponse!
+  login(login: LoginInput!): LoginResponse!
   createUser(createUserInput: CreateUserInputDTO!): User!
   verifyEmail(verifyEmail: VerifyEmailDTO!): String!
   changePassword(changePassword: ChangePasswordDTO!): String!
+  sendForgotPasswordEmail(sendForgotPasswordEmailInput: SendForgotPasswordEmailDTO!): String!
+  forgotPassword(forgotpassword: ForgotPasswordDTO!): String!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
 }
@@ -95,6 +97,16 @@ input ChangePasswordDTO {
   password: String!
   new_password: String!
   confirm_password: String!
+}
+
+input SendForgotPasswordEmailDTO {
+  email: String!
+}
+
+input ForgotPasswordDTO {
+  new_password: String!
+  confirm_password: String!
+  token: String!
 }
 
 input CreateAddressInputDTO {

@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PickType } from '@nestjs/graphql';
 import {
     IsEmail,
     IsNotEmpty,
@@ -45,3 +45,6 @@ export class VerifyEmailDTO {
     @IsNotEmpty({ message: 'Token is required' })
     token: string;
 }
+
+@InputType()
+export class SendForgotPasswordEmailDTO extends PickType(CreateUserInputDTO, ['email'] as const) { }

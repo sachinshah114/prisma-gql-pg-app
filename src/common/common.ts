@@ -14,8 +14,14 @@ export function GenerateRandomAlphaNumericCode(length: number) {
   return code;
 }
 
-export function EmptyCheck(str: string) {
-  // return str.trim().length > 0 ? str.trim().toLowerCase() : null
+export function EmptyCheck(str: string, key?: string) {
+  // Skip lowercase transformation for specific keys
+  //console.log(`Key name is ::: `, key);
+
+  // if (key === "password" || key === "confirmPassword") {
+  //   console.log(`password key found ::::::::::::::::::::::: ::: `);
+  //   return str.trim() || null; // Only trim, no lowercase
+  // }
   return str.trim().toLowerCase() || null
 }
 
@@ -40,7 +46,7 @@ export function FilterBodyObject(obj: any): any {
     } else if (Array.isArray(item)) {
       // Handle arrays
       return item
-        .map(recursiveFilter) // Process each element
+        .map((element) => recursiveFilter(element)) // Process each element
         .filter((element) => element !== null); // Remove null elements
     } else if (typeof item === "string") {
       // Apply EmptyCheck on strings
@@ -59,8 +65,11 @@ export class FilterObjectGuard implements CanActivate {
     // Convert to GQL context
     const gqlContext = GqlExecutionContext.create(context);
 
-    //Exampt some route from hear...
-    if ('verifyEmail' in gqlContext.getArgs()) {
+    //Exampt some route from hear...    
+    if ('verifyEmail' in gqlContext.getArgs() ||
+      'forgotpassword' in gqlContext.getArgs() ||
+      'createUserInput' in gqlContext.getArgs() ||
+      'login' in gqlContext.getArgs()) {
       return true;
     }
 
