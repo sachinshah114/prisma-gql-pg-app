@@ -46,7 +46,6 @@ export class UserResolver {
 
   @Mutation(() => String)
   async verifyEmail(@Args('verifyEmail') verifyEmailDTO: VerifyEmailDTO) {
-    console.log(`Token is ::: `, verifyEmailDTO.token);
     return await this.userService.verifyUserByEmailToken(verifyEmailDTO.token);
   }
 
