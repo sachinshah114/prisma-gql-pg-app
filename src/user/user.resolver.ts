@@ -11,6 +11,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { ChangePasswordDTO } from 'dto/change-password.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { ForgotPasswordDTO } from 'dto/forgot-password.dto';
+import { ValidateGuard } from 'src/auth/validate.guard';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -18,7 +19,7 @@ export class UserResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => GetProfile)
-  @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]))
+  @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
   async getProfile(@Context() context: any): Promise<User> {
     const user = context.req.user as User;
     return this.userService.getProfile(user.email);
