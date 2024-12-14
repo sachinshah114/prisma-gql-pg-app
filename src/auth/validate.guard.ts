@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from 'entity/user.entity';
+import { User, UserRole } from 'entity/user.entity';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class ValidateGuard implements CanActivate {
         const ctx = GqlExecutionContext.create(context);
         const user = ctx.getContext().req.user as User;
         console.log("Validate User guard User ::: ", user);
-        if (user.isAdmin)
+        if (user.role == UserRole.ADMIN)
             return true;
         const userDetails = await this.prisma.user.findFirst({
             where: {

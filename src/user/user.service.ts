@@ -34,7 +34,6 @@ export class UserService {
                 id: true,
                 email: true,
                 name: true,
-                isAdmin: true,
                 password: true,
                 role: true
             }
@@ -50,7 +49,6 @@ export class UserService {
                 id: true,
                 email: true,
                 name: true,
-                isAdmin: true,
                 isBlocked: true,
                 isVerified: true,
                 phone: true

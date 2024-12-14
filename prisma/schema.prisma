@@ -13,18 +13,29 @@ enum UserRole {
   USER
 }
 
+enum OrderStatus {
+  PENDING
+  PROCESSED
+  DISPATCHED
+  FINISHED
+  CANCELED
+}
+
 model User {
   id               Int       @id @default(autoincrement())
   name             String
   email            String    @unique
   password         String
-  isAdmin          Boolean   @default(false)
   isVerified       Boolean   @default(false)
   verificationCode String?
   phone            String?
   isBlocked        Boolean   @default(false)
   role             UserRole  @default(USER)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @updatedAt
   address          Address[]
+  Product          Product[]
+  Order            Order[]
 }
 
 model Address {
@@ -33,10 +44,77 @@ model Address {
   address2  String?
   city      String
   postcode  String
+  country   String   @default("United Kingdom")
   isActive  Boolean // Used as a flag, At a time one address should be only active
   isDeleted Boolean
   User      User     @relation(fields: [userId], references: [id])
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Order     Order[]
+}
+
+model Product {
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String
+  price          Float
+  ProductImages  ProductImages[] //A product has manay images
+  user           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  ProductReviews ProductReviews[] //A product has manay reviews
+  orderItems     OrderItems[]
+}
+
+model ProductImages {
+  id        Int      @id @default(autoincrement())
+  image     String
+  isDefault Boolean
+  createdAt DateTime @default(now())
+  ProductId Product  @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model ProductReviews {
+  id        Int      @id @default(autoincrement())
+  review    String
+  rate      Float
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id           Int          @id @default(autoincrement())
+  user         User         @relation(fields: [userId], references: [id])
+  price        Float
+  userId       Int
+  orderItems   OrderItems[]
+  address      Address      @relation(fields: [addressId], references: [id])
+  addressId    Int
+  coupon       CouponCode?  @relation(fields: [couponCodeId], references: [id])
+  couponCodeId Int?
+  status       OrderStatus  @default(PENDING)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model OrderItems {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  item      Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  productId Int
+}
+
+model CouponCode {
+  id         Int      @id @default(autoincrement())
+  code       String
+  validuntil DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Order      Order[]
 }

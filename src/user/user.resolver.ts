@@ -175,8 +175,7 @@ mutation{
 query {
   getProfile{
     name,
-    email,
-    isAdmin,
+    email,    
     role
   }
 }

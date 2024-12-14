@@ -27,9 +27,6 @@ export class User {
     password?: string;
 
     @Field()
-    isAdmin: boolean;
-
-    @Field()
     isVerified: boolean;
 
     @Field()
