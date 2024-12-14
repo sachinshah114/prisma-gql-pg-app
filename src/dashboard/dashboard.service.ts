@@ -26,8 +26,6 @@ export class DashboardService {
                 isVerified: true
             }
         });
-
-
         return data;
     }
 }
