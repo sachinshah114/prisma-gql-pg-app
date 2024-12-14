@@ -12,6 +12,7 @@ import { ChangePasswordDTO } from 'dto/change-password.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { ForgotPasswordDTO } from 'dto/forgot-password.dto';
 import { ValidateGuard } from 'src/auth/validate.guard';
+import { EditProfileDTO } from 'dto/edit-profile.dto';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -133,7 +134,13 @@ export class UserResolver {
   }
 
 
-
+  @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
+  async editProfile(@Args('editProfile') editProfileDTO: EditProfileDTO, @Context() context: any) {
+    const user = context.req.user as User;
+    return this.userService.updateUserDetails(editProfileDTO, user);
+  }
 
 
 

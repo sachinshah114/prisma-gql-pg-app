@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
 import { FilterObjectGuard } from './common/common';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { FilterObjectGuard } from './common/common';
     }),
     AuthModule,
     UserModule,
-    AddressModule
+    AddressModule,
+    DashboardModule
   ],
   controllers: [AppController],
   providers: [AppService,

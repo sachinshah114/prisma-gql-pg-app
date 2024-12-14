@@ -11,6 +11,8 @@ export class ValidateGuard implements CanActivate {
         const ctx = GqlExecutionContext.create(context);
         const user = ctx.getContext().req.user as User;
         console.log("Validate User guard User ::: ", user);
+        if (user.isAdmin)
+            return true;
         const userDetails = await this.prisma.user.findFirst({
             where: {
                 id: user.id

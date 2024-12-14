@@ -73,6 +73,7 @@ type Mutation {
   changePassword(changePassword: ChangePasswordDTO!): String!
   sendForgotPasswordEmail(sendForgotPasswordEmailInput: SendForgotPasswordEmailDTO!): String!
   forgotPassword(forgotpassword: ForgotPasswordDTO!): String!
+  editProfile(editProfile: EditProfileDTO!): User!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
 }
@@ -107,6 +108,11 @@ input ForgotPasswordDTO {
   new_password: String!
   confirm_password: String!
   token: String!
+}
+
+input EditProfileDTO {
+  name: String!
+  phone: String
 }
 
 input CreateAddressInputDTO {

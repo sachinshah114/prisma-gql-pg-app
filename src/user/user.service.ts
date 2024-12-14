@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { CreateUserInputDTO } from 'dto/create-user.dto';
+import { EditProfileDTO } from 'dto/edit-profile.dto';
 import { User } from 'entity/user.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { EmailService } from 'src/common/emailService';
@@ -104,7 +105,7 @@ export class UserService {
     }
 
     async updateUserDetails(data: any, user: User) {
-        await this.prisma.user.update({
+        return await this.prisma.user.update({
             where: {
                 email: user.email
             },
