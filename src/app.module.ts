@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
 import { FilterObjectGuard } from './common/common';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AuthModule,
     UserModule,
     AddressModule,
-    DashboardModule
+    DashboardModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService,
