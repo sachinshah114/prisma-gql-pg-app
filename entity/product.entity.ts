@@ -1,11 +1,11 @@
-import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Field, Float, GraphQLISODateTime, ID, Int, ObjectType } from "@nestjs/graphql";
 import { ProductImages } from "./product-images.entity";
 import { ProductReviews } from "./product-reviews.entity";
 import { User } from "./user.entity";
 
 @ObjectType()
 export class Product {
-    @Field(() => Int)
+    @Field(() => ID)
     id: number;
 
     @Field()
@@ -24,11 +24,11 @@ export class Product {
     ProductReviews?: ProductReviews[]
 
     @Field(() => Int)
-    userId: User;
+    userId: number;
 
-    @Field()
-    createdAt: Date;
+    @Field(() => GraphQLISODateTime)
+    createdAt?: Date;
 
-    @Field()
-    updatedAt: Date;
+    @Field(() => GraphQLISODateTime)
+    updatedAt?: Date;
 }

@@ -13,9 +13,6 @@ export class ProductImages {
     isDefault: boolean;
 
     @Field()
-    ProductId: Product;
-
-    @Field(() => Int)
     productId: number;
 
     @Field()

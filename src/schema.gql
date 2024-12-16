@@ -59,6 +59,35 @@ type LoginResponse {
   access_token: String!
 }
 
+type ProductImages {
+  id: Int!
+  image: String!
+  isDefault: Boolean!
+  productId: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProductReviews {
+  id: Int!
+  review: String!
+  rate: Float!
+  productId: Float!
+  createdAt: DateTime!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String!
+  price: Float!
+  prductImages: [ProductImages!]
+  ProductReviews: [ProductReviews!]
+  userId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   getProfile: GetProfile!
   getAddressList: [Address!]!
@@ -80,6 +109,7 @@ type Mutation {
   editProfile(editProfile: EditProfileDTO!): User!
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
+  createProduct(createProduct: CreateProductDTO!): Product!
 }
 
 input LoginInput {
@@ -134,4 +164,10 @@ input UpdateAddressInputDTO {
   postcode: String
   isActive: Boolean
   isDeleted: Boolean
+}
+
+input CreateProductDTO {
+  name: String!
+  description: String!
+  price: Float!
 }

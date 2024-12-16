@@ -13,7 +13,7 @@ export class ProductReviews {
     rate: number;
 
     @Field()
-    productId: Product
+    productId: number;
 
     @Field()
     createdAt: Date;
