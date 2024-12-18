@@ -26,6 +26,12 @@ export class Product {
     @Field(() => Int)
     userId: number;
 
+    @Field()
+    isActive: boolean;
+
+    @Field()
+    hasImage: boolean;
+
     @Field(() => GraphQLISODateTime)
     createdAt?: Date;
 
