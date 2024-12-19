@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateProductDTO {
@@ -17,4 +17,19 @@ export class CreateProductDTO {
 
     @IsOptional()
     userId: number;
+}
+
+@InputType()
+export class UploadProductImageDTO {
+    @Field(() => Int)
+    @IsNumber()
+    productId: number;
+
+    @Field()
+    @IsBoolean()
+    isDefault: boolean;
+
+    @Field()
+    @IsNotEmpty()
+    image: string;
 }

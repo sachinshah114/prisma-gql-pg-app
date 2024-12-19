@@ -84,6 +84,8 @@ type Product {
   prductImages: [ProductImages!]
   ProductReviews: [ProductReviews!]
   userId: Int!
+  isActive: Boolean!
+  hasImage: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -110,6 +112,7 @@ type Mutation {
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
   createProduct(createProduct: CreateProductDTO!): Product!
+  uploadImage(uploadProductImage: UploadProductImageDTO!): ProductImages!
 }
 
 input LoginInput {
@@ -170,4 +173,10 @@ input CreateProductDTO {
   name: String!
   description: String!
   price: Float!
+}
+
+input UploadProductImageDTO {
+  productId: Int!
+  isDefault: Boolean!
+  image: String!
 }
