@@ -7,7 +7,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { CreateProductDTO, UploadProductImageDTO } from 'dto/product.dto';
+import { CreateProductDTO, PaginationDTO, ProductFilterDTO, UploadProductImageDTO } from 'dto/product.dto';
 import { ProductImages } from 'entity/product-images.entity';
 
 @Resolver()
@@ -27,7 +27,6 @@ export class ProductResolver {
     @Mutation(() => ProductImages)
     @UseGuards(JwtAuthGuard)
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
-
     async uploadImage(@Args('uploadProductImage') uploadProductImageDTO: UploadProductImageDTO, @Context() context: any) {
         const user = context.req.user as User;
 
@@ -42,4 +41,20 @@ export class ProductResolver {
         return this.productService.uploadProductImage(uploadProductImageDTO);
     }
 
+    /* 
+        API which will returns all the products as list...
+        USER - Only gets his own items only
+        ADMIN - Gets all the products
+    */
+    @Query(() => [Product], { name: 'getProductList' })
+    @UseGuards(JwtAuthGuard)
+    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
+    async getProductList(
+        @Args('filters', { type: () => ProductFilterDTO, nullable: true }) filters: ProductFilterDTO,
+        @Args('pagination', { type: () => PaginationDTO, nullable: true }) pagination: PaginationDTO,
+        @Context() context: any
+    ) {
+        const user = context.req.user as User;
+        return this.productService.getFilteredProducts(filters, pagination, user);
+    }
 }

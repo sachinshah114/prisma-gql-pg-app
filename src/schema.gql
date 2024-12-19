@@ -94,12 +94,35 @@ type Query {
   getProfile: GetProfile!
   getAddressList: [Address!]!
   dashboard: JSONObject!
+  getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): [Product!]!
 }
 
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSONObject
+
+input ProductFilterDTO {
+  """Search term"""
+  search: String
+
+  """Filter by ID"""
+  id: Int
+
+  """Filter product with minimum price"""
+  minPrice: Float
+
+  """Filter product with maximum price"""
+  maxPrice: Float
+}
+
+input PaginationDTO {
+  """Number of items per page"""
+  limit: Int
+
+  """Page number to retrieve"""
+  page: Int
+}
 
 type Mutation {
   login(login: LoginInput!): LoginResponse!
