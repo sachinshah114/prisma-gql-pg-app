@@ -90,11 +90,19 @@ type Product {
   updatedAt: DateTime!
 }
 
+type ProductListResponse {
+  """List of products"""
+  list: [Product!]!
+
+  """Total number of products"""
+  total: Int!
+}
+
 type Query {
   getProfile: GetProfile!
   getAddressList: [Address!]!
   dashboard: JSONObject!
-  getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): [Product!]!
+  getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): ProductListResponse!
 }
 
 """

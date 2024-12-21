@@ -7,7 +7,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { CreateProductDTO, PaginationDTO, ProductFilterDTO, UploadProductImageDTO } from 'dto/product.dto';
+import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, UploadProductImageDTO } from 'dto/product.dto';
 import { ProductImages } from 'entity/product-images.entity';
 
 @Resolver()
@@ -32,7 +32,9 @@ export class ProductResolver {
 
         //validate Product Id exist and matched with this user's id with relation...
         const isValidProductId = await this.productService.validateProduct(uploadProductImageDTO.productId, user.id);
-        if (!isValidProductId.id)
+        console.log(isValidProductId);
+
+        if (!isValidProductId || !isValidProductId.id)
             throw new BadRequestException('Invalid product');
 
         if (uploadProductImageDTO.isDefault)
@@ -46,7 +48,7 @@ export class ProductResolver {
         USER - Only gets his own items only
         ADMIN - Gets all the products
     */
-    @Query(() => [Product], { name: 'getProductList' })
+    @Query(() => ProductListResponse, { name: 'getProductList' })
     @UseGuards(JwtAuthGuard)
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
     async getProductList(

@@ -1,5 +1,6 @@
-import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { InputType, Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Product } from 'entity/product.entity';
 
 @InputType()
 export class CreateProductDTO {
@@ -37,23 +38,44 @@ export class UploadProductImageDTO {
 @InputType()
 export class ProductFilterDTO {
     @Field(() => String, { nullable: true, description: "Search term" })
+    @IsOptional()
+    @IsString()
     search?: string;
 
     @Field(() => Int, { nullable: true, description: "Filter by ID" })
+    @IsOptional()
+    @IsNumber()
     id?: number;
 
     @Field(() => Float, { nullable: true, description: 'Filter product with minimum price' })
+    @IsOptional()
+    @IsNumber()
     minPrice?: number;
 
     @Field(() => Float, { nullable: true, description: 'Filter product with maximum price' })
+    @IsOptional()
+    @IsNumber()
     maxPrice?: number;
 }
 
 @InputType()
 export class PaginationDTO {
     @Field(() => Int, { nullable: true, description: "Number of items per page" })
-    limit?: number;
+    @IsOptional()
+    @IsNumber()
+    limit: number;
 
     @Field(() => Int, { nullable: true, description: "Page number to retrieve" })
-    page?: number;
+    @IsOptional()
+    @IsNumber()
+    page: number;
+}
+
+@ObjectType()
+export class ProductListResponse {
+    @Field(() => [Product], { description: "List of products" })
+    list: Product[];
+
+    @Field(() => Int, { description: "Total number of products" })
+    total: number;
 }

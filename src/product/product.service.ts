@@ -48,29 +48,36 @@ export class ProductService {
         const { id, search, minPrice, maxPrice } = filters || {};
         const { limit = 10, page = 1 } = pagination || {};
 
-        const where = {
+        const where: any = {
             AND: [
-                id ? { id } : undefined,
-                search ? { name: { contains: search } } : undefined,
-                // minPrice ? {
-                //     price: {
-
-                //     }
-                // } : undefined,
+                ...(id ? [{ id }] : []),
+                ...(search ? [{ name: { contains: search } }] : []),
+                ...(minPrice !== undefined ? [{ price: { gte: minPrice } }] : []),
+                ...(maxPrice !== undefined ? [{ price: { lte: maxPrice } }] : []),
             ],
         };
 
         const skip = (page - 1) * limit;
 
-        console.log(`Where condtion is ::: `, where);
+        console.log(`Where condtion is ::: `, JSON.stringify(where));
         console.log(`skip condtion is ::: `, skip);
 
-
-        return this.prisma.product.findMany({
+        const list = await this.prisma.product.findMany({
             where,
             skip,
             take: limit,
             orderBy: { createdAt: 'desc' },
         });
+
+        // Get the total count of products
+        const total = await this.prisma.product.count({ where });
+        console.log(`[Final] ::: `, JSON.stringify({
+            list,
+            total,
+        }));
+        return {
+            list,
+            total,
+        }
     }
 }
