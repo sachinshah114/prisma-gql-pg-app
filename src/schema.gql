@@ -122,6 +122,9 @@ input ProductFilterDTO {
 
   """Filter product with maximum price"""
   maxPrice: Float
+
+  """Used when user wants his own added product list only"""
+  ownProductsOnly: Boolean
 }
 
 input PaginationDTO {

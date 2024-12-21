@@ -56,6 +56,11 @@ export class ProductFilterDTO {
     @IsOptional()
     @IsNumber()
     maxPrice?: number;
+
+    @Field(() => Boolean, { nullable: true, description: 'Used when user wants his own added product list only' })
+    @IsOptional()
+    @IsBoolean()
+    ownProductsOnly?: boolean;
 }
 
 @InputType()

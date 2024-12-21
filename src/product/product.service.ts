@@ -45,7 +45,7 @@ export class ProductService {
 
 
     async getFilteredProducts(filters: ProductFilterDTO, pagination: PaginationDTO, user: User) {
-        const { id, search, minPrice, maxPrice } = filters || {};
+        const { id, search, minPrice, maxPrice, ownProductsOnly } = filters || {};
         const { limit = 10, page = 1 } = pagination || {};
 
         const where: any = {
@@ -54,6 +54,7 @@ export class ProductService {
                 ...(search ? [{ name: { contains: search } }] : []),
                 ...(minPrice !== undefined ? [{ price: { gte: minPrice } }] : []),
                 ...(maxPrice !== undefined ? [{ price: { lte: maxPrice } }] : []),
+                ...(ownProductsOnly === true) ? [{ userId: user.id }] : []
             ],
         };
 
