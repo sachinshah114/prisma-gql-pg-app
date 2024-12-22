@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { Product } from 'entity/product.entity';
 
 @InputType()
@@ -83,4 +83,26 @@ export class ProductListResponse {
 
     @Field(() => Int, { description: "Total number of products" })
     total: number;
+}
+
+
+@InputType()
+export class ProductReviewsDTO {
+    @Field()
+    @IsString()
+    @IsNotEmpty()
+    review: string;
+
+    @Field(() => Float)
+    @Min(0.5)
+    @Max(5)
+    rate: number;
+
+    @Field(() => Int)
+    @IsNumber()
+    productId: number;
+
+    @IsOptional()
+    userId: number;
+
 }

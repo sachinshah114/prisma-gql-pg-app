@@ -7,8 +7,9 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, UploadProductImageDTO } from 'dto/product.dto';
+import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, ProductReviewsDTO, UploadProductImageDTO } from 'dto/product.dto';
 import { ProductImages } from 'entity/product-images.entity';
+import { ProductReviews } from 'entity/product-reviews.entity';
 
 @Resolver()
 export class ProductResolver {
@@ -58,5 +59,28 @@ export class ProductResolver {
     ) {
         const user = context.req.user as User;
         return this.productService.getFilteredProducts(filters, pagination, user);
+    }
+
+    @Mutation(() => String)
+    @UseGuards(JwtAuthGuard)
+    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.USER]), ValidateGuard)
+    async addProductReview(@Args('addProductReview') productReviewsDTO: ProductReviewsDTO, @Context() context: any) {
+        const user = context.req.user as User;
+        productReviewsDTO.userId = user.id;
+
+        //Validate product first and user can't give a reivew to his own product...
+        const ownProduct = await this.productService.validateProduct(productReviewsDTO.productId, user.id);
+
+        if (ownProduct)
+            return new BadRequestException('You must not give a review to your own product');
+
+        const getProductDetails = await this.productService.getProductById(productReviewsDTO.productId);
+
+        if (!getProductDetails)
+            return new BadRequestException('Product not found');
+
+        //All right... So now add a review of the product...
+        await this.productService.addProductReview(productReviewsDTO);
+        return { message: "Product review added successfully" }.message.toString();
     }
 }

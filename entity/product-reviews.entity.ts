@@ -16,5 +16,8 @@ export class ProductReviews {
     productId: number;
 
     @Field()
+    userId: number;
+
+    @Field()
     createdAt: Date;
 }

@@ -17,7 +17,4 @@ export class ProductImages {
 
     @Field()
     createdAt: Date;
-
-    @Field()
-    updatedAt: Date;
 }

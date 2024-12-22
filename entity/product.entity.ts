@@ -18,7 +18,7 @@ export class Product {
     price: number;
 
     @Field(() => [ProductImages], { nullable: true })
-    prductImages?: ProductImages[];
+    ProductImages?: ProductImages[];
 
     @Field(() => [ProductReviews], { nullable: true })
     ProductReviews?: ProductReviews[]
@@ -37,4 +37,7 @@ export class Product {
 
     @Field(() => GraphQLISODateTime)
     updatedAt?: Date;
+
+    @Field(() => Int)
+    reviewsCount: number;
 }

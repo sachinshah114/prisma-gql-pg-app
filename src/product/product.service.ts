@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDTO, PaginationDTO, ProductFilterDTO, UploadProductImageDTO } from 'dto/product.dto';
+import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductReviewsDTO, UploadProductImageDTO } from 'dto/product.dto';
 import { User } from 'entity/user.entity';
 import { PrismaService } from 'src/prisma.service';
 
@@ -63,12 +63,27 @@ export class ProductService {
         console.log(`Where condtion is ::: `, JSON.stringify(where));
         console.log(`skip condtion is ::: `, skip);
 
-        const list = await this.prisma.product.findMany({
+        let list = await this.prisma.product.findMany({
             where,
+            include: {
+                ProductImages: true,
+                _count: {
+                    select: {
+                        ProductReviews: true
+                    }
+                }
+            },
             skip,
             take: limit,
             orderBy: { createdAt: 'desc' },
         });
+
+        list = list.map((product) => ({
+            ...product,
+            reviewsCount: product._count.ProductReviews,
+            _count: undefined,
+        }));
+        console.log(` Final list ::: `, JSON.stringify(list));
 
         // Get the total count of products
         const total = list.length > 0 ? await this.prisma.product.count({ where }) : 0;
@@ -76,5 +91,17 @@ export class ProductService {
             list,
             total,
         }
+    }
+
+    async getProductById(productId: number) {
+        return this.prisma.product.findFirst({
+            where: {
+                id: productId
+            }
+        });
+    }
+
+    async addProductReview(data: ProductReviewsDTO) {
+        return this.prisma.productReviews.create({ data });
     }
 }
