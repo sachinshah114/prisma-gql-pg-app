@@ -71,7 +71,7 @@ export class ProductService {
         });
 
         // Get the total count of products
-        const total = await this.prisma.product.count({ where });
+        const total = list.length > 0 ? await this.prisma.product.count({ where }) : 0;
         return {
             list,
             total,
