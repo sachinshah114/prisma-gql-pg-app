@@ -11,6 +11,7 @@ import { AddressModule } from './address/address.module';
 import { FilterObjectGuard } from './common/common';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ProductModule } from './product/product.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { ProductModule } from './product/product.module';
     UserModule,
     AddressModule,
     DashboardModule,
-    ProductModule
+    ProductModule,
+    CouponModule
   ],
   controllers: [AppController],
   providers: [AppService,

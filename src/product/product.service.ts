@@ -83,7 +83,6 @@ export class ProductService {
             reviewsCount: product._count.ProductReviews,
             _count: undefined,
         }));
-        console.log(` Final list ::: `, JSON.stringify(list));
 
         // Get the total count of products
         const total = list.length > 0 ? await this.prisma.product.count({ where }) : 0;
