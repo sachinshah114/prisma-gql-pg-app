@@ -9,10 +9,6 @@ export class CreateCouponDTO {
     @IsNotEmpty()
     code: string;
 
-    // @Field()
-    // @IsDate()
-    // @Type(() => Date)
-    // validuntil: Date;
     @Field()
     @IsString()
     @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'Date must be in yyyy-MM-dd format' })

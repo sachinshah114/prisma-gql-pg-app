@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { BadRequestException, CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 
 export function GenerateRandomAlphaNumericCode(length: number) {
@@ -85,4 +85,19 @@ export class FilterObjectGuard implements CanActivate {
 
     return true; // Allow the request to proceed
   }
+}
+
+
+//This function will accept date in string format and validate. if it's wrong, throw an error.
+//If it's correct, will return a date
+export function validateDateAndReturnDate(str: string) {
+  const [year, month, day] = str.split('-').map(Number);
+  const formattedDate = new Date(year, month - 1, day);
+
+  if (isNaN(formattedDate.getTime())) {
+    throw new BadRequestException('Invalid date format. Must be a valid date in yyyy-MM-dd format.');
+  }
+
+  return formattedDate;
+
 }

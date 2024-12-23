@@ -8,6 +8,7 @@ import { RoleGuard } from 'src/auth/roles.guard';
 import { ValidateGuard } from 'src/auth/validate.guard';
 import { CouponService } from './coupon.service';
 import { CouponCode } from 'entity/coupon.entity';
+import { validateDateAndReturnDate } from 'src/common/common';
 
 @Resolver()
 export class CouponResolver {
@@ -21,12 +22,7 @@ export class CouponResolver {
         const { validuntil, ...rest } = createCouponDTO;
 
         // Convert the validuntil field from yyyy-MM-dd to a Date instance
-        const [year, month, day] = validuntil.split('-').map(Number);
-        const formattedDate = new Date(year, month - 1, day);
-
-        if (isNaN(formattedDate.getTime())) {
-            throw new BadRequestException('Invalid date format. Must be a valid date in yyyy-MM-dd format.');
-        }
+        const formattedDate = validateDateAndReturnDate(validuntil);
 
         // Use a new object for processing
         const processedCoupon = {
