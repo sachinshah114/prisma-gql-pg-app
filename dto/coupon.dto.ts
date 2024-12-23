@@ -1,6 +1,6 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsString, Max, Min } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString, Matches, Max, Min } from "class-validator";
 
 @InputType()
 export class CreateCouponDTO {
@@ -9,11 +9,14 @@ export class CreateCouponDTO {
     @IsNotEmpty()
     code: string;
 
+    // @Field()
+    // @IsDate()
+    // @Type(() => Date)
+    // validuntil: Date;
     @Field()
-    @IsDate()
-    @IsNotEmpty()
-    @Type(() => Date)
-    validuntil: Date;
+    @IsString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'Date must be in yyyy-MM-dd format' })
+    validuntil: string; // Accepting string for validation
 
     @Field()
     @IsNumber()
