@@ -118,10 +118,11 @@ model OrderItems {
 }
 
 model CouponCode {
-  id         Int      @id @default(autoincrement())
-  code       String
-  validuntil DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  Order      Order[]
+  id                 Int      @id @default(autoincrement())
+  code               String
+  validuntil         DateTime
+  discountPercentage Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  Order              Order[]
 }

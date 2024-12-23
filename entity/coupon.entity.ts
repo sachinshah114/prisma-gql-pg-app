@@ -12,6 +12,9 @@ export class CouponCode {
     validuntil: Date;
 
     @Field()
+    discountPercentage: number;
+
+    @Field()
     createdAt: Date;
 
     @Field()

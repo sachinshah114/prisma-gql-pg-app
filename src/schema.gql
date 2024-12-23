@@ -149,6 +149,7 @@ type Mutation {
   createProduct(createProduct: CreateProductDTO!): Product!
   uploadImage(uploadProductImage: UploadProductImageDTO!): ProductImages!
   addProductReview(addProductReview: ProductReviewsDTO!): String!
+  createCoupon(createCoupon: CreateCouponDTO!): String!
 }
 
 input LoginInput {
@@ -221,4 +222,10 @@ input ProductReviewsDTO {
   review: String!
   rate: Float!
   productId: Int!
+}
+
+input CreateCouponDTO {
+  code: String!
+  validuntil: DateTime!
+  discountPercentage: Float!
 }
