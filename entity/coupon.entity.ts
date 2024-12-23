@@ -9,7 +9,10 @@ export class CouponCode {
     code: string;
 
     @Field()
-    validuntil: Date;
+    startDate: Date;
+
+    @Field()
+    endDate: Date;
 
     @Field()
     discountPercentage: number;

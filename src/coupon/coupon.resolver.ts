@@ -1,5 +1,5 @@
-import { BadRequestException, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { CreateCouponDTO } from 'dto/coupon.dto';
 import { UserRole } from 'entity/user.entity';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
@@ -19,15 +19,17 @@ export class CouponResolver {
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN]), ValidateGuard)
     async createCoupon(@Args('createCoupon') createCouponDTO: CreateCouponDTO) {
 
-        const { validuntil, ...rest } = createCouponDTO;
+        const { startDate, endDate, ...rest } = createCouponDTO;
 
         // Convert the validuntil field from yyyy-MM-dd to a Date instance
-        const formattedDate = validateDateAndReturnDate(validuntil);
+        const formattedStartDate = validateDateAndReturnDate(startDate);
+        const formattedEndDate = validateDateAndReturnDate(endDate);
 
         // Use a new object for processing
         const processedCoupon = {
             ...rest,
-            validuntil: formattedDate,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate
         };
 
 

@@ -226,6 +226,7 @@ input ProductReviewsDTO {
 
 input CreateCouponDTO {
   code: String!
-  validuntil: String!
+  startDate: String!
+  endDate: String!
   discountPercentage: Float!
 }
