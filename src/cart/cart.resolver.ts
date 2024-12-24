@@ -97,4 +97,11 @@ query GetCartDetails {
 }
 
 
+mutation{
+  removeItemfromCart(removeItemfromCart:{
+    id: 2
+  })
+}
+
+
 */
