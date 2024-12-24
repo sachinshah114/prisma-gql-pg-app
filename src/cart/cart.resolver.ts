@@ -1,12 +1,12 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CartService } from './cart.service';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { AddToCartDTO } from 'dto/cart.dto';
+import { AddToCartDTO, RemoveItemFromDTO } from 'dto/cart.dto';
 import { ProductService } from 'src/product/product.service';
 import { Product } from 'entity/product.entity';
 import { Cart } from 'entity/cart.entity';
@@ -41,8 +41,25 @@ export class CartResolver {
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.USER]), ValidateGuard)
     async getCartDetails(@Context() context: any) {
         const user = context.req.user as User;
-
         return this.cartService.getCartDetails(user);
+    }
+
+    //Remove any item from cart...
+    @Mutation(() => String)
+    @UseGuards(JwtAuthGuard)
+    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.USER]), ValidateGuard)
+    async removeItemfromCart(@Args('removeItemfromCart') removeItemFromDTO: RemoveItemFromDTO, @Context() context: any) {
+        const user = context.req.user as User;
+
+        //Validate id with this user and exist...
+        const isCartIdValid = await this.cartService.isCartValid(removeItemFromDTO, user);
+        if (!isCartIdValid)
+            throw new BadGatewayException('Data not found.');
+
+        //Data found so now remove it...
+        await this.cartService.removeItemfromCart(removeItemFromDTO);
+        return { message: "Product removed from cart successfully" }.message.toString();
+
     }
 }
 
@@ -50,5 +67,34 @@ export class CartResolver {
 mutation AddToCart {
     addToCart(addToCart: { productId: 4, quantity: 2 })
 }
+
+query GetCartDetails {
+    getCartDetails {
+        userId
+        productId
+        quantity
+        createdAt
+        product {
+            id
+            name
+            description
+            price
+            userId
+            isActive
+            hasImage
+            createdAt
+            updatedAt
+            reviewsCount
+            ProductImages {
+                id
+                image
+                isDefault
+                productId
+                createdAt
+            }
+        }
+    }
+}
+
 
 */

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AddToCartDTO } from 'dto/cart.dto';
+import { AddToCartDTO, RemoveItemFromDTO } from 'dto/cart.dto';
 import { User } from 'entity/user.entity';
 import { PrismaService } from 'src/prisma.service';
 
@@ -27,6 +27,23 @@ export class CartService {
                 }
             },
             orderBy: { createdAt: 'desc' },
+        });
+    }
+
+    async isCartValid(data: RemoveItemFromDTO, user: User) {
+        return this.prisma.cart.findFirst({
+            where: {
+                id: data.id,
+                userId: user.id
+            }
+        });
+    }
+
+    async removeItemfromCart(data: RemoveItemFromDTO) {
+        return this.prisma.cart.delete({
+            where: {
+                id: data.id
+            }
         });
     }
 }

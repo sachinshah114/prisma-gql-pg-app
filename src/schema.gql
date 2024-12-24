@@ -160,6 +160,7 @@ type Mutation {
   addProductReview(addProductReview: ProductReviewsDTO!): String!
   createCoupon(createCoupon: CreateCouponDTO!): String!
   addToCart(addToCart: AddToCartDTO!): String!
+  removeItemfromCart(removeItemfromCart: RemoveItemFromDTO!): String!
 }
 
 input LoginInput {
@@ -244,4 +245,8 @@ input CreateCouponDTO {
 input AddToCartDTO {
   productId: Float!
   quantity: Float!
+}
+
+input RemoveItemFromDTO {
+  id: Float!
 }

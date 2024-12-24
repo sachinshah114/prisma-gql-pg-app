@@ -13,5 +13,11 @@ export class AddToCartDTO {
     @Field()
     @IsNumber()
     quantity: number;
+}
 
+@InputType()
+export class RemoveItemFromDTO {
+    @Field()
+    @IsNumber()
+    id: number;
 }
