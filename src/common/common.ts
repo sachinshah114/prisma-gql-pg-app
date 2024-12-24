@@ -101,3 +101,9 @@ export function validateDateAndReturnDate(str: string) {
   return formattedDate;
 
 }
+
+export function isDateBetween(startDate: Date, endDate: Date): boolean {
+  const today = new Date();
+
+  return today >= startDate && today <= endDate;
+}
