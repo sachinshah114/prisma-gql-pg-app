@@ -38,6 +38,6 @@ export class Product {
     @Field(() => GraphQLISODateTime)
     updatedAt?: Date;
 
-    @Field(() => Int)
+    @Field(() => Int, { nullable: true })
     reviewsCount: number;
 }

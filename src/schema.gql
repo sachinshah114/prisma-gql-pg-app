@@ -88,7 +88,7 @@ type Product {
   hasImage: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
-  reviewsCount: Int!
+  reviewsCount: Int
 }
 
 type ProductListResponse {
@@ -99,11 +99,20 @@ type ProductListResponse {
   total: Int!
 }
 
+type Cart {
+  userId: Float!
+  productId: Float!
+  product: Product
+  quantity: Float!
+  createdAt: DateTime!
+}
+
 type Query {
   getProfile: GetProfile!
   getAddressList: [Address!]!
   dashboard: JSONObject!
   getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): ProductListResponse!
+  getCartDetails: [Cart!]!
 }
 
 """
@@ -150,6 +159,7 @@ type Mutation {
   uploadImage(uploadProductImage: UploadProductImageDTO!): ProductImages!
   addProductReview(addProductReview: ProductReviewsDTO!): String!
   createCoupon(createCoupon: CreateCouponDTO!): String!
+  addToCart(addToCart: AddToCartDTO!): String!
 }
 
 input LoginInput {
@@ -229,4 +239,9 @@ input CreateCouponDTO {
   startDate: String!
   endDate: String!
   discountPercentage: Float!
+}
+
+input AddToCartDTO {
+  productId: Float!
+  quantity: Float!
 }
