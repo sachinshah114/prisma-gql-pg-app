@@ -10,7 +10,6 @@ import { AddToCartDTO, RemoveItemFromDTO } from 'dto/cart.dto';
 import { ProductService } from 'src/product/product.service';
 import { Product } from 'entity/product.entity';
 import { Cart } from 'entity/cart.entity';
-import { PlaceOrderDTO } from 'dto/order.dto';
 
 @Resolver()
 export class CartResolver {
@@ -126,5 +125,8 @@ mutation{
   })
 }
 
-
+mutation{
+  placeOrder
+}
+  
 */
