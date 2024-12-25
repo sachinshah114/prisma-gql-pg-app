@@ -78,7 +78,7 @@ export class CartResolver {
             if (!getUserDefaultActiveAddress) throw new BadRequestException("Please setup address first to place the order.");
 
             await this.cartService.placeOrder(user, getUserDefaultActiveAddress.id);
-            return "";
+            return { message: "Your order has been placed successfully" }.message.toString();
         } else {
             throw new BadRequestException("Cart is empty to place the order");
         }

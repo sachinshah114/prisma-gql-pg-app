@@ -64,8 +64,6 @@ export class CartService {
             },
         });
 
-        console.log(`[getUsersCartDetails] ::: `, getUsersCartDetails);
-
         // Fetch product ids and get product details to store...
         const orderItems = getUsersCartDetails.map(x => x.productId);
 
@@ -76,17 +74,24 @@ export class CartService {
                 }
             }
         });
-        console.log(`[getProductDetails] ::: `, JSON.stringify(getProductDetails));
+
+        const total = getProductDetails.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.price;
+        }, 0);
 
         //Fist Place an order and create order Id.
+        //[TODO] - Need to work on coupon appied stuff...
+        //[TODO] - Add a code for authorize card payment - (total price after discount)
         let orderObj = {
             addressId: addressId,
-            userId: user.id
+            userId: user.id,
+            price: total,
+            total: total,
         }
         const Order = await this.prisma.order.create({
             data: orderObj
         });
-        console.log(` \n\n\n [Order] ::: `, JSON.stringify(Order));
+
         let orderProducts = [];
         for (let i = 0; i < getUsersCartDetails.length; i++) {
             orderProducts.push({
@@ -95,12 +100,18 @@ export class CartService {
                 quantity: getUsersCartDetails[i].quantity
             } as OrderItems);
         }
-        console.log(` \n\n\n [orderProducts array] ::: `, JSON.stringify(orderProducts));
 
         //Insert this all in order items 
         const subOrderDetails = await this.prisma.orderItems.createMany({
             data: orderProducts
         });
-        console.log(` \n\n\n [subOrderDetails] ::: `, JSON.stringify(subOrderDetails));
+
+        //At last, Now make a cart clear as user placed the order...
+        await this.prisma.cart.deleteMany({
+            where: {
+                userId: user.id
+            }
+        });
+        return true;
     }
 }
