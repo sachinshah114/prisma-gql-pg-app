@@ -9,7 +9,6 @@ import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
 import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, ProductReviewsDTO, UploadProductImageDTO } from 'dto/product.dto';
 import { ProductImages } from 'entity/product-images.entity';
-import { ProductReviews } from 'entity/product-reviews.entity';
 
 @Resolver()
 export class ProductResolver {

@@ -107,12 +107,44 @@ type Cart {
   createdAt: DateTime!
 }
 
+type CouponCode {
+  id: ID!
+  code: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  discountPercentage: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Order {
+  id: Int!
+  userId: User!
+  addressId: Address!
+  couponCodeId: CouponCode!
+  price: Float!
+  discountPrice: Float!
+  total: Float!
+  status: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OrderListResponse {
+  """List of orders"""
+  list: [Order!]!
+
+  """Total number of orders"""
+  total: Int!
+}
+
 type Query {
   getProfile: GetProfile!
   getAddressList: [Address!]!
   dashboard: JSONObject!
   getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): ProductListResponse!
   getCartDetails: [Cart!]!
+  getOrderHistory(orderFilters: GetOrderHistoryDTO, pagination: PaginationDTO): OrderListResponse!
 }
 
 """
@@ -143,6 +175,20 @@ input PaginationDTO {
 
   """Page number to retrieve"""
   page: Int
+}
+
+input GetOrderHistoryDTO {
+  """Filter by ID"""
+  id: Int
+  status: String
+
+  """Filter order with minimum price"""
+  minPrice: Float
+
+  """Filter order with maximum price"""
+  maxPrice: Float
+  fromDate: String
+  toDate: String
 }
 
 type Mutation {
