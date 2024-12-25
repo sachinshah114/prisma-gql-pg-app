@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AddToCartDTO, RemoveItemFromDTO } from 'dto/cart.dto';
-import { Cart } from 'entity/cart.entity';
+import { OrderItems } from 'entity/order-item.entity';
 import { User } from 'entity/user.entity';
 import { PrismaService } from 'src/prisma.service';
 
@@ -57,7 +57,7 @@ export class CartService {
         });
     }
 
-    async placeOrder(user: User) {
+    async placeOrder(user: User, addressId: number) {
         const getUsersCartDetails = await this.prisma.cart.findMany({
             where: {
                 userId: user.id
@@ -77,5 +77,30 @@ export class CartService {
             }
         });
         console.log(`[getProductDetails] ::: `, JSON.stringify(getProductDetails));
+
+        //Fist Place an order and create order Id.
+        let orderObj = {
+            addressId: addressId,
+            userId: user.id
+        }
+        const Order = await this.prisma.order.create({
+            data: orderObj
+        });
+        console.log(` \n\n\n [Order] ::: `, JSON.stringify(Order));
+        let orderProducts = [];
+        for (let i = 0; i < getUsersCartDetails.length; i++) {
+            orderProducts.push({
+                orderId: Order.id,
+                productId: getUsersCartDetails[i].productId,
+                quantity: getUsersCartDetails[i].quantity
+            } as OrderItems);
+        }
+        console.log(` \n\n\n [orderProducts array] ::: `, JSON.stringify(orderProducts));
+
+        //Insert this all in order items 
+        const subOrderDetails = await this.prisma.orderItems.createMany({
+            data: orderProducts
+        });
+        console.log(` \n\n\n [subOrderDetails] ::: `, JSON.stringify(subOrderDetails));
     }
 }
