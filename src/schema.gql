@@ -161,6 +161,7 @@ type Mutation {
   createCoupon(createCoupon: CreateCouponDTO!): String!
   addToCart(addToCart: AddToCartDTO!): String!
   removeItemfromCart(removeItemfromCart: RemoveItemFromDTO!): String!
+  placeOrder: String!
 }
 
 input LoginInput {

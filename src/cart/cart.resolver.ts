@@ -10,6 +10,7 @@ import { AddToCartDTO, RemoveItemFromDTO } from 'dto/cart.dto';
 import { ProductService } from 'src/product/product.service';
 import { Product } from 'entity/product.entity';
 import { Cart } from 'entity/cart.entity';
+import { PlaceOrderDTO } from 'dto/order.dto';
 
 @Resolver()
 export class CartResolver {
@@ -61,6 +62,28 @@ export class CartResolver {
         return { message: "Product removed from cart successfully" }.message.toString();
 
     }
+
+    /*
+        To place the order, The whole cart will be consider to place the order...
+    */
+    @Mutation(() => String)
+    @UseGuards(JwtAuthGuard)
+    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.USER]), ValidateGuard)
+    async placeOrder(@Context() context: any) {
+        const user = context.req.user as User;
+        const cartDetails = await this.cartService.getCartDetails(user);
+        if (cartDetails.length > 0) {
+            //validate user has any address setup and fetch isActive = True address...
+            const getUserDefaultActiveAddress = await this.cartService.getUserDefaultActiveAddress(user);
+            if (!getUserDefaultActiveAddress) throw new BadRequestException("Please setup address first to place the order.");
+
+            await this.cartService.placeOrder(user);
+            return "";
+        } else {
+            throw new BadRequestException("Cart is empty to place the order");
+        }
+    }
+
 }
 
 /*
