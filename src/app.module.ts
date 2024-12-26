@@ -39,7 +39,7 @@ import { OrderModule } from './order/order.module';
     ProductModule,
     CouponModule,
     CartModule,
-    OrderModule
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService,

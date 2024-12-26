@@ -59,3 +59,11 @@ export class OrderListResponse {
     @Field(() => Int, { description: "Total number of orders" })
     total: number;
 }
+
+@InputType()
+export class GetOrderDetailsByIdDTO {
+    @Field()
+    @IsOptional()
+    @IsNumber()
+    id: number;
+}

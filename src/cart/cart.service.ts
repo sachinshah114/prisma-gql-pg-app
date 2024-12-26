@@ -63,9 +63,12 @@ export class CartService {
                 userId: user.id
             },
         });
+        console.log(`\n\n\ngetUsersCartDetails `, getUsersCartDetails);
+
 
         // Fetch product ids and get product details to store...
         const orderItems = getUsersCartDetails.map(x => x.productId);
+        console.log(`\n\n\norderItems `, orderItems);
 
         const getProductDetails = await this.prisma.product.findMany({
             where: {
@@ -74,36 +77,52 @@ export class CartService {
                 }
             }
         });
+        console.log(`\n\n\ngetProductDetails `, getProductDetails);
 
-        const total = getProductDetails.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price;
-        }, 0);
-
+        let grandTotal = 0;
         //Fist Place an order and create order Id.
         //[TODO] - Need to work on coupon appied stuff...
         //[TODO] - Add a code for authorize card payment - (total price after discount)
         let orderObj = {
             addressId: addressId,
-            userId: user.id,
-            price: total,
-            total: total,
+            userId: user.id
         }
+        console.log(`\n\n\orderObj `, orderObj);
         const Order = await this.prisma.order.create({
             data: orderObj
         });
 
         let orderProducts = [];
         for (let i = 0; i < getUsersCartDetails.length; i++) {
+            let cart = getUsersCartDetails[i];
+            let productPrice = getProductDetails.find(x => x.id == cart.productId).price;
+            let cost = (productPrice * cart.quantity);
+            grandTotal += cost;
             orderProducts.push({
                 orderId: Order.id,
-                productId: getUsersCartDetails[i].productId,
-                quantity: getUsersCartDetails[i].quantity
+                //orderId: 1,
+                productId: cart.productId,
+                quantity: cart.quantity,
+                productPrice: productPrice,
+                productTotal: cost
             } as OrderItems);
+
         }
 
         //Insert this all in order items 
-        const subOrderDetails = await this.prisma.orderItems.createMany({
+        await this.prisma.orderItems.createMany({
             data: orderProducts
+        });
+
+        //Now update the grand total in main order table...        
+        await this.prisma.order.update({
+            data: {
+                price: grandTotal,
+                total: grandTotal //[TODO] - Reduce amount if coupon code has been used...
+            },
+            where: {
+                id: Order.id
+            }
         });
 
         //At last, Now make a cart clear as user placed the order...

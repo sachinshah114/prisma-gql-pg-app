@@ -117,6 +117,15 @@ type CouponCode {
   updatedAt: DateTime!
 }
 
+type OrderItems {
+  id: ID!
+  orderId: Order!
+  productId: Product
+  productPrice: Float!
+  productTotal: Float!
+  quantity: Float!
+}
+
 type Order {
   id: Int!
   userId: User!
@@ -126,6 +135,7 @@ type Order {
   discountPrice: Float!
   total: Float!
   status: String!
+  orderItems: [OrderItems!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -145,6 +155,7 @@ type Query {
   getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): ProductListResponse!
   getCartDetails: [Cart!]!
   getOrderHistory(orderFilters: GetOrderHistoryDTO, pagination: PaginationDTO): OrderListResponse!
+  getOrderDetailsById(getOrderDetailsById: GetOrderDetailsByIdDTO!): JSONObject!
 }
 
 """
@@ -189,6 +200,10 @@ input GetOrderHistoryDTO {
   maxPrice: Float
   fromDate: String
   toDate: String
+}
+
+input GetOrderDetailsByIdDTO {
+  id: Float!
 }
 
 type Mutation {

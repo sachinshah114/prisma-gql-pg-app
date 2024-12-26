@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GetOrderHistoryDTO } from 'dto/order.dto';
+import { GetOrderDetailsByIdDTO, GetOrderHistoryDTO } from 'dto/order.dto';
 import { PaginationDTO } from 'dto/product.dto';
 import { User, UserRole } from 'entity/user.entity';
 import { validateDateAndReturnDate } from 'src/common/common';
@@ -64,5 +64,43 @@ export class OrderService {
             list,
             total
         }
+    }
+
+    async isOrderExist(data: GetOrderDetailsByIdDTO) {
+        return await this.prisma.order.findFirst({
+            where: {
+                id: data.id
+            }
+        });
+    }
+
+    async getOrderDetailsById(data: GetOrderDetailsByIdDTO) {
+        const fetchData = await this.prisma.order.findFirst({
+            where: {
+                id: data.id
+            },
+            include: {
+                orderItems: {
+                    include: {
+                        Product: {
+                            include: {
+                                ProductImages: {
+                                    where: {
+                                        isDefault: true
+                                    }, select: {
+                                        id: true,
+                                        image: true,
+                                    },
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        console.log(`[fetchData] ::: `, JSON.stringify(fetchData));
+
+        return fetchData;
     }
 }

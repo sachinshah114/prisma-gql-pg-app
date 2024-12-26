@@ -2,6 +2,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { User } from "./user.entity";
 import { Address } from "./address.entity";
 import { CouponCode } from "./coupon.entity";
+import { OrderItems } from "./order-item.entity";
 
 @ObjectType()
 export class Order {
@@ -28,6 +29,9 @@ export class Order {
 
     @Field()
     status: string
+
+    @Field(() => [OrderItems], { nullable: true })
+    orderItems?: OrderItems[];
 
     @Field()
     createdAt: Date;

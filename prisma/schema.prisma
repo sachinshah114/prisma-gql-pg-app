@@ -111,12 +111,14 @@ model Order {
 }
 
 model OrderItems {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  orderId   Int
-  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  quantity  Int     @default(1)
-  productId Int
+  id           Int     @id @default(autoincrement())
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId      Int
+  Product      Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId    Int
+  quantity     Int     @default(1)
+  productPrice Float // Used to store price per item...
+  productTotal Float // Used to store perItem * qty value in perticular order...
 }
 
 model CouponCode {
