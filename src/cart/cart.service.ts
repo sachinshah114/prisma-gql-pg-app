@@ -62,22 +62,10 @@ export class CartService {
             where: {
                 userId: user.id
             },
-        });
-        console.log(`\n\n\ngetUsersCartDetails `, getUsersCartDetails);
-
-
-        // Fetch product ids and get product details to store...
-        const orderItems = getUsersCartDetails.map(x => x.productId);
-        console.log(`\n\n\norderItems `, orderItems);
-
-        const getProductDetails = await this.prisma.product.findMany({
-            where: {
-                id: {
-                    in: orderItems
-                }
+            include: {
+                product: true
             }
         });
-        console.log(`\n\n\ngetProductDetails `, getProductDetails);
 
         let grandTotal = 0;
         //Fist Place an order and create order Id.
@@ -87,7 +75,6 @@ export class CartService {
             addressId: addressId,
             userId: user.id
         }
-        console.log(`\n\n\orderObj `, orderObj);
         const Order = await this.prisma.order.create({
             data: orderObj
         });
@@ -95,41 +82,45 @@ export class CartService {
         let orderProducts = [];
         for (let i = 0; i < getUsersCartDetails.length; i++) {
             let cart = getUsersCartDetails[i];
-            let productPrice = getProductDetails.find(x => x.id == cart.productId).price;
+            let productPrice = getUsersCartDetails[i].product.price;
             let cost = (productPrice * cart.quantity);
             grandTotal += cost;
             orderProducts.push({
                 orderId: Order.id,
-                //orderId: 1,
                 productId: cart.productId,
                 quantity: cart.quantity,
                 productPrice: productPrice,
                 productTotal: cost
             } as OrderItems);
-
         }
 
-        //Insert this all in order items 
-        await this.prisma.orderItems.createMany({
-            data: orderProducts
-        });
+        await this.prisma.$transaction(async (prisma) => {
+            //Insert this all in order items 
+            await prisma.orderItems.createMany({
+                data: orderProducts
+            });
 
-        //Now update the grand total in main order table...        
-        await this.prisma.order.update({
-            data: {
-                price: grandTotal,
-                total: grandTotal //[TODO] - Reduce amount if coupon code has been used...
-            },
-            where: {
-                id: Order.id
-            }
-        });
 
-        //At last, Now make a cart clear as user placed the order...
-        await this.prisma.cart.deleteMany({
-            where: {
-                userId: user.id
-            }
+            //Now update the grand total in main order table...        
+            await prisma.order.update({
+                data: {
+                    price: grandTotal,
+                    total: grandTotal //[TODO] - Reduce amount if coupon code has been used...
+                },
+                where: {
+                    id: Order.id
+                }
+            });
+
+
+
+            //At last, Now make a cart clear as user placed the order...
+            await this.prisma.cart.deleteMany({
+                where: {
+                    userId: user.id
+                }
+            });
+
         });
         return true;
     }
