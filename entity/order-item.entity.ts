@@ -11,7 +11,10 @@ export class OrderItems {
     orderId: number;
 
     @Field(() => Product, { nullable: true })
-    productId?: number;
+    Product?: Product;
+
+    @Field()
+    productId: number;
 
     @Field()
     productPrice?: number;

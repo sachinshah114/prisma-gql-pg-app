@@ -87,10 +87,7 @@ export class OrderService {
                                 ProductImages: {
                                     where: {
                                         isDefault: true
-                                    }, select: {
-                                        id: true,
-                                        image: true,
-                                    },
+                                    }
                                 }
                             }
                         }

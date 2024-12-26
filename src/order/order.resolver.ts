@@ -9,7 +9,6 @@ import { ValidateGuard } from 'src/auth/validate.guard';
 import { GetOrderDetailsByIdDTO, GetOrderHistoryDTO, OrderListResponse } from 'dto/order.dto';
 import { PaginationDTO } from 'dto/product.dto';
 import { Order } from 'entity/order.entity';
-import { GraphQLJSONObject } from 'graphql-type-json';
 
 @Resolver()
 export class OrderResolver {
@@ -26,7 +25,7 @@ export class OrderResolver {
         return this.orderService.getOrderHistory(orderFilters, pagination, user);
     }
 
-    @Query(() => GraphQLJSONObject) //GraphQLJSONObject
+    @Query(() => Order) //GraphQLJSONObject
     @UseGuards(JwtAuthGuard)
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
     async getOrderDetailsById(@Args('getOrderDetailsById') getOrderDetailsByIdDTO: GetOrderDetailsByIdDTO, @Context() context: any) {

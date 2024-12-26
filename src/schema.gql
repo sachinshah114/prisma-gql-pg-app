@@ -120,7 +120,8 @@ type CouponCode {
 type OrderItems {
   id: ID!
   orderId: Order!
-  productId: Product
+  Product: Product
+  productId: Float!
   productPrice: Float!
   productTotal: Float!
   quantity: Float!
@@ -155,7 +156,7 @@ type Query {
   getProductList(filters: ProductFilterDTO, pagination: PaginationDTO): ProductListResponse!
   getCartDetails: [Cart!]!
   getOrderHistory(orderFilters: GetOrderHistoryDTO, pagination: PaginationDTO): OrderListResponse!
-  getOrderDetailsById(getOrderDetailsById: GetOrderDetailsByIdDTO!): JSONObject!
+  getOrderDetailsById(getOrderDetailsById: GetOrderDetailsByIdDTO!): Order!
 }
 
 """
