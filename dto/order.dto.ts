@@ -1,5 +1,4 @@
-import { Field, Float, InputType, Int, ObjectType } from "@nestjs/graphql";
-import { PaginationDTO } from "./product.dto";
+import { Field, Float, InputType, Int, IntersectionType, ObjectType, PickType } from "@nestjs/graphql";
 import { IsEnum, IsNumber, IsOptional, IsString, Matches } from "class-validator";
 import { Order } from "entity/order.entity";
 
@@ -66,4 +65,14 @@ export class GetOrderDetailsByIdDTO {
     @IsOptional()
     @IsNumber()
     id: number;
+}
+
+@InputType()
+export class ChangeOrderStatusDTO extends IntersectionType(
+    GetOrderDetailsByIdDTO,
+    PickType(GetOrderHistoryDTO, ['status'] as const)
+) {
+    @Field(() => String)
+    @IsEnum(OrderStatus, { message: 'Status must be one of: PENDING, PROCESSED, DISPATCHED, FINISHED, CANCELED' })
+    status: string;
 }

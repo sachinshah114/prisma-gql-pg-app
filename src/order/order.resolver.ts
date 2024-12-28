@@ -6,7 +6,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { GetOrderDetailsByIdDTO, GetOrderHistoryDTO, OrderListResponse } from 'dto/order.dto';
+import { ChangeOrderStatusDTO, GetOrderDetailsByIdDTO, GetOrderHistoryDTO, OrderListResponse } from 'dto/order.dto';
 import { PaginationDTO } from 'dto/product.dto';
 import { Order } from 'entity/order.entity';
 
@@ -25,7 +25,7 @@ export class OrderResolver {
         return this.orderService.getOrderHistory(orderFilters, pagination, user);
     }
 
-    @Query(() => Order) //GraphQLJSONObject
+    @Query(() => Order)
     @UseGuards(JwtAuthGuard)
     @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
     async getOrderDetailsById(@Args('getOrderDetailsById') getOrderDetailsByIdDTO: GetOrderDetailsByIdDTO, @Context() context: any) {
@@ -41,6 +41,19 @@ export class OrderResolver {
             if (isValidOrderId.userId !== user.id) throw new BadGatewayException("Order id data not matched.");
         }
         return this.orderService.getOrderDetailsById(getOrderDetailsByIdDTO);
+    }
+
+    @Mutation(() => String)
+    @UseGuards(JwtAuthGuard)
+    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN]), ValidateGuard)
+    async changeOrderStatus(@Args('getOrderDetailsById') changeOrderStatusDTO: ChangeOrderStatusDTO) {
+        const isValidOrderId = await this.orderService.isOrderExist(changeOrderStatusDTO);
+        if (!isValidOrderId) throw new BadRequestException("Order data not found");
+
+        //Update the status in db 
+        changeOrderStatusDTO.status = changeOrderStatusDTO.status.toUpperCase();
+        await this.orderService.updateOrderById(changeOrderStatusDTO);
+        return { message: "Order status updated successfully" }.message.toString();
     }
 }
 
@@ -69,4 +82,35 @@ query GetOrderHistory {
         total
     }
 }
+
+
+query GetOrderDetailsById {
+    getOrderDetailsById(getOrderDetailsById: { id: 3 }) {
+        id
+        price
+        discountPrice
+        total
+        status
+        createdAt
+        updatedAt
+        orderItems {
+            id
+            productId
+            productPrice
+            productTotal
+            quantity
+            Product {
+                id
+                name
+                description
+                ProductImages {
+                    id
+                    image
+                    isDefault
+                }
+            }
+        }
+    }
+}
+
 */

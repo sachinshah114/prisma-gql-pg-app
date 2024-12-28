@@ -224,6 +224,7 @@ type Mutation {
   addToCart(addToCart: AddToCartDTO!): String!
   removeItemfromCart(removeItemfromCart: RemoveItemFromDTO!): String!
   placeOrder: String!
+  changeOrderStatus(getOrderDetailsById: ChangeOrderStatusDTO!): String!
 }
 
 input LoginInput {
@@ -312,4 +313,9 @@ input AddToCartDTO {
 
 input RemoveItemFromDTO {
   id: Float!
+}
+
+input ChangeOrderStatusDTO {
+  id: Float!
+  status: String!
 }

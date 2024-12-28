@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { GetOrderDetailsByIdDTO, GetOrderHistoryDTO } from 'dto/order.dto';
+import { OrderStatus } from '@prisma/client';
+import { ChangeOrderStatusDTO, GetOrderDetailsByIdDTO, GetOrderHistoryDTO } from 'dto/order.dto';
 import { PaginationDTO } from 'dto/product.dto';
 import { User, UserRole } from 'entity/user.entity';
 import { validateDateAndReturnDate } from 'src/common/common';
@@ -99,5 +100,16 @@ export class OrderService {
         console.log(`[fetchData] ::: `, JSON.stringify(fetchData));
 
         return fetchData;
+    }
+
+    async updateOrderById(data: ChangeOrderStatusDTO) {
+        return this.prisma.order.update({
+            data: {
+                status: data.status.toUpperCase() as OrderStatus,
+            },
+            where: {
+                id: data.id
+            }
+        });
     }
 }
