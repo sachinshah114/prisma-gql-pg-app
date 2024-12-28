@@ -113,4 +113,9 @@ query GetOrderDetailsById {
     }
 }
 
+mutation ChangeOrderStatus {
+    changeOrderStatus(getOrderDetailsById: { id: 3, status: "PROCESSED" })
+}
+
+
 */
