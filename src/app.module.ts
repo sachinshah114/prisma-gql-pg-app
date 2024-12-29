@@ -14,7 +14,6 @@ import { ProductModule } from './product/product.module';
 import { CouponModule } from './coupon/coupon.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
-import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -33,10 +32,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
       //   return graphQLFormattedError;
       // },
     }),
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 10,
-    }]),
     AuthModule,
     UserModule,
     AddressModule,
