@@ -11,6 +11,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true, // Throw error for extra properties
       exceptionFactory: (validationErrors: ValidationError[]) => {
         // Custom error format
+        console.log(`This is the validation error ::: `, validationErrors);
+
         const formattedErrors = validationErrors.map((error) => ({
           field: error.property,
           constraints: Object.values(error.constraints || {}),
@@ -23,6 +25,20 @@ async function bootstrap() {
       },
     }),
   );
+
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     exceptionFactory: (validationErrors: ValidationError[] = []) => {
+  //       return new BadRequestException(
+  //         validationErrors.map((error) => ({
+  //           field: error.property,
+  //           error: Object.values(error.constraints).join(', '),
+  //         })),
+  //       );
+  //     },
+  //   }),
+  // );
+
 
   // new ValidationPipe({
   //   transform: true,
@@ -58,6 +74,6 @@ async function bootstrap() {
   //   }),
   // );    
   app.enableCors();
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();

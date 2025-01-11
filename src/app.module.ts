@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLISODateTime, GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { UserModule } from './user/user.module';
@@ -20,6 +20,18 @@ import { OrderModule } from './order/order.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+
+      playground: false,
+      plugins: [],
+      resolvers: { DateTime: GraphQLISODateTime },
+      context: ({ req, res }) => ({ req, res }),
+      formatError: (err) => ({
+        message: err.message,
+        status: err.extensions.code,
+        errors: err.extensions.originalError
+      }),
+
+
       // definitions: {
       //   path: join(process.cwd(), 'src/graphql.ts'),
       //   outputAs: 'class',
