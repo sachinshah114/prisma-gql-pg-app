@@ -219,7 +219,6 @@ type Mutation {
   createAddress(createAddress: CreateAddressInputDTO!): Address!
   updateAddress(updateAddress: UpdateAddressInputDTO!): Address!
   createProduct(createProduct: CreateProductDTO!): Product!
-  uploadImage(uploadProductImage: UploadProductImageDTO!): ProductImages!
   addProductReview(addProductReview: ProductReviewsDTO!): String!
   createCoupon(createCoupon: CreateCouponDTO!): String!
   addToCart(addToCart: AddToCartDTO!): String!
@@ -287,12 +286,6 @@ input CreateProductDTO {
   description: String!
   price: Float!
   image: [String!]!
-}
-
-input UploadProductImageDTO {
-  productId: Int!
-  isDefault: Boolean!
-  image: String!
 }
 
 input ProductReviewsDTO {
