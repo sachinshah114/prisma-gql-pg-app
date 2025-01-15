@@ -25,12 +25,6 @@ export class ProductService {
         });
     }
 
-    async uploadProductImage(data: UploadProductImageDTO) {
-        return this.prisma.productImages.create({
-            data
-        });
-    }
-
     async validateProduct(productId: number, userId: number) {
         return this.prisma.product.findFirst({
             where: {

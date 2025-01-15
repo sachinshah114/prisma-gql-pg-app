@@ -7,8 +7,7 @@ import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
 import { RoleGuard } from 'src/auth/roles.guard';
 import { User, UserRole } from 'entity/user.entity';
 import { ValidateGuard } from 'src/auth/validate.guard';
-import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, ProductReviewsDTO, UploadProductImageDTO } from 'dto/product.dto';
-import { ProductImages } from 'entity/product-images.entity';
+import { CreateProductDTO, PaginationDTO, ProductFilterDTO, ProductListResponse, ProductReviewsDTO } from 'dto/product.dto';
 
 @Resolver()
 export class ProductResolver {
@@ -22,25 +21,6 @@ export class ProductResolver {
         const user = context.req.user as User;
         createProductDTO.userId = user.id;
         return this.productService.createProduct(createProductDTO);
-    }
-
-    @Mutation(() => ProductImages)
-    @UseGuards(JwtAuthGuard)
-    @UseGuards(GqlAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.USER]), ValidateGuard)
-    async uploadImage(@Args('uploadProductImage') uploadProductImageDTO: UploadProductImageDTO, @Context() context: any) {
-        const user = context.req.user as User;
-
-        //validate Product Id exist and matched with this user's id with relation...
-        const isValidProductId = await this.productService.validateProduct(uploadProductImageDTO.productId, user.id);
-        console.log(isValidProductId);
-
-        if (!isValidProductId || !isValidProductId.id)
-            throw new BadRequestException('Invalid product');
-
-        if (uploadProductImageDTO.isDefault)
-            await this.productService.resetDefaultImagesFlag(uploadProductImageDTO.productId);
-
-        return this.productService.uploadProductImage(uploadProductImageDTO);
     }
 
     /* 

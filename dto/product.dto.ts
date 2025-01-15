@@ -28,21 +28,6 @@ export class CreateProductDTO {
 }
 
 @InputType()
-export class UploadProductImageDTO {
-    @Field(() => Int)
-    @IsNumber()
-    productId: number;
-
-    @Field()
-    @IsBoolean()
-    isDefault: boolean;
-
-    @Field()
-    @IsNotEmpty()
-    image: string;
-}
-
-@InputType()
 export class ProductFilterDTO {
     @Field(() => String, { nullable: true, description: "Search term" })
     @IsOptional()
