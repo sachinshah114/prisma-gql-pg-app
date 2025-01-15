@@ -13,6 +13,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { ForgotPasswordDTO } from 'dto/forgot-password.dto';
 import { ValidateGuard } from 'src/auth/validate.guard';
 import { EditProfileDTO } from 'dto/edit-profile.dto';
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -141,10 +142,6 @@ export class UserResolver {
     const user = context.req.user as User;
     return this.userService.updateUserDetails(editProfileDTO, user);
   }
-
-
-
-
 }
 
 

@@ -87,7 +87,6 @@ type Product {
   ProductReviews: [ProductReviews!]
   userId: Int!
   isActive: Boolean!
-  hasImage: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
   reviewsCount: Int
@@ -287,6 +286,7 @@ input CreateProductDTO {
   name: String!
   description: String!
   price: Float!
+  image: [String!]!
 }
 
 input UploadProductImageDTO {

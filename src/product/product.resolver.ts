@@ -83,3 +83,24 @@ export class ProductResolver {
         return { message: "Product review added successfully" }.message.toString();
     }
 }
+
+
+/*
+
+mutation CreateProduct {
+    createProduct(
+        createProduct: { name: "swift", description: "Best car", price: 500000, image: ["http://google.com/1.jpg", "http://google.com/2.jpg", "http://google.com/3.jpg"]}
+    ) {
+        id
+        name
+        description
+        price
+        userId
+        isActive        
+        createdAt
+        updatedAt
+        reviewsCount
+    }
+}
+
+*/

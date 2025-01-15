@@ -29,9 +29,6 @@ export class Product {
     @Field()
     isActive: boolean;
 
-    @Field()
-    hasImage: boolean;
-
     @Field(() => GraphQLISODateTime)
     createdAt?: Date;
 

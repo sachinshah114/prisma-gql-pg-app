@@ -64,8 +64,7 @@ model Product {
   ProductImages  ProductImages[] //A product has manay images
   user           User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId         Int
-  isActive       Boolean          @default(true) // Admin can change it. if it's false, it'll not come in list
-  hasImage       Boolean          @default(false) // Product should only visible to user's if the product has at least 1 image
+  isActive       Boolean          @default(true) // Admin can change it. if it's false, it'll not come in list  
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   ProductReviews ProductReviews[] //A product has manay reviews

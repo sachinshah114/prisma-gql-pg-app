@@ -24,7 +24,7 @@ export class CartResolver {
         const user = context.req.user as User;
 
         //Is product valid and exist...
-        const isProductExist = await this.productService.getProductById(addToCartDTO.productId) as Product;
+        const isProductExist = await this.productService.getProductById(addToCartDTO.productId);
         if (!isProductExist)
             throw new BadRequestException('Product not found');
 
@@ -102,8 +102,7 @@ query GetCartDetails {
             description
             price
             userId
-            isActive
-            hasImage
+            isActive            
             createdAt
             updatedAt
             reviewsCount

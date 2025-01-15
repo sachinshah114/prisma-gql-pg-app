@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { Product } from 'entity/product.entity';
 
 @InputType()
@@ -15,6 +15,13 @@ export class CreateProductDTO {
     @Field(() => Float)
     @IsNotEmpty()
     price: number;
+
+    @Field(() => [String])
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
+    image: string[];
 
     @IsOptional()
     userId: number;

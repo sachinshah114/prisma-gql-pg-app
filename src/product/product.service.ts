@@ -8,8 +8,20 @@ export class ProductService {
     constructor(private readonly prisma: PrismaService) { }
 
     async createProduct(data: CreateProductDTO) {
+        const productData = data;
         return this.prisma.product.create({
-            data
+            data: {
+                name: productData.name,
+                price: productData.price,
+                description: productData.description,
+                userId: productData.userId,
+                ProductImages: {
+                    create: productData.image.map((image, index) => ({
+                        image: image,
+                        isDefault: index == 0 ? true : false
+                    }))
+                }
+            }
         });
     }
 
@@ -27,7 +39,6 @@ export class ProductService {
             },
             select: {
                 id: true,
-                hasImage: true
             }
         });
     }
